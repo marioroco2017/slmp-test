@@ -15,6 +15,7 @@ use App\Models\Todo;
 use App\Models\User;
 use App\Services\JsonPlaceHolderApi;
 use Illuminate\Console\Command;
+use Illuminate\Support\Str;
 
 
 class FetchJsonPlaceholderData extends Command
@@ -77,8 +78,8 @@ class FetchJsonPlaceholderData extends Command
                     [
                         'id' => $raw['id'],
                         'name' => $raw['name'],
-                        'username' => $raw['username'],
-                        'email' => $raw['email'],
+                        'username' => Str::lower($raw['username']),
+                        'email' => Str::lower($raw['email']),
                         'phone' => $raw['phone'] ?? null,
                         'website' => $raw['website'] ?? null,
                         'password' => bcrypt('password123'),
