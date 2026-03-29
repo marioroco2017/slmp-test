@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Todo extends Model
 {
-    public $incrementing = false;
 
     protected $fillable = [
         'id',

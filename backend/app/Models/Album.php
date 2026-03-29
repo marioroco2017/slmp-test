@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Album extends Model
 {
-    public $incrementing = false;
 
     protected $fillable = [
         'id',

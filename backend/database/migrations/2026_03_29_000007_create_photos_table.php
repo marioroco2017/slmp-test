@@ -10,7 +10,7 @@ return new class extends Migration {
 
 
         Schema::create('photos', function (Blueprint $table) {
-            $table->unsignedBigInteger('id')->primary();
+            $table->id();
             $table->foreignId('album_id')->constrained()->cascadeOnDelete();
             $table->string('title');
             $table->string('url', 500);
