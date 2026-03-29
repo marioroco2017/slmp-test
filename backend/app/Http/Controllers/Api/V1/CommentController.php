@@ -9,6 +9,7 @@ use App\Http\Resources\CommentResource;
 use App\Models\Comment;
 use App\Services\CommentService;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Throwable;
 
@@ -18,11 +19,11 @@ class CommentController extends Controller
     {
     }
 
-    public function index(): AnonymousResourceCollection
+    public function index(Request $request): AnonymousResourceCollection
     {
         $this->authorize('viewAny', Comment::class);
 
-        return CommentResource::collection($this->commentService->paginate());
+        return CommentResource::collection($this->commentService->paginate($request->user()));
     }
 
     public function show(Comment $comment): CommentResource

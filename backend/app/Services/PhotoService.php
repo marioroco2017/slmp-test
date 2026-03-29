@@ -3,13 +3,14 @@
 namespace App\Services;
 
 use App\Models\Photo;
+use App\Models\User;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class PhotoService
 {
-    public function paginate(int $perPage = 15): LengthAwarePaginator
+    public function paginate(User $user, int $perPage = 15): LengthAwarePaginator
     {
-        return Photo::paginate($perPage);
+        return Photo::whereHas('album', fn ($q) => $q->where('user_id', $user->id))->paginate($perPage);
     }
 
     public function create(array $data): Photo

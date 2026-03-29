@@ -2,11 +2,33 @@
 
 namespace App\Policies;
 
+use App\Models\Todo;
+use App\Models\User;
+
 class TodoPolicy
 {
-    public function viewAny(): bool   { return true; }
-    public function view(): bool      { return true; }
-    public function create(): bool    { return true; }
-    public function update(): bool    { return true; }
-    public function delete(): bool    { return true; }
+    public function viewAny(User $user): bool
+    {
+        return true;
+    }
+
+    public function view(User $user, Todo $todo): bool
+    {
+        return $user->id === $todo->user_id;
+    }
+
+    public function create(User $user): bool
+    {
+        return true;
+    }
+
+    public function update(User $user, Todo $todo): bool
+    {
+        return $user->id === $todo->user_id;
+    }
+
+    public function delete(User $user, Todo $todo): bool
+    {
+        return $user->id === $todo->user_id;
+    }
 }

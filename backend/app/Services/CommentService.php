@@ -3,13 +3,14 @@
 namespace App\Services;
 
 use App\Models\Comment;
+use App\Models\User;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class CommentService
 {
-    public function paginate(int $perPage = 15): LengthAwarePaginator
+    public function paginate(User $user, int $perPage = 15): LengthAwarePaginator
     {
-        return Comment::paginate($perPage);
+        return Comment::whereHas('post', fn ($q) => $q->where('user_id', $user->id))->paginate($perPage);
     }
 
     public function create(array $data): Comment

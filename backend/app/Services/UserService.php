@@ -7,9 +7,9 @@ use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class UserService
 {
-    public function paginate(int $perPage = 15): LengthAwarePaginator
+    public function paginate(User $user, int $perPage = 15): LengthAwarePaginator
     {
-        return User::with(['address.geo', 'company'])->paginate($perPage);
+        return User::with(['address.geo', 'company'])->where('id', $user->id)->paginate($perPage);
     }
 
     public function findWithRelations(User $user): User

@@ -9,6 +9,7 @@ use App\Http\Resources\PhotoResource;
 use App\Models\Photo;
 use App\Services\PhotoService;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Throwable;
 
@@ -18,11 +19,11 @@ class PhotoController extends Controller
     {
     }
 
-    public function index(): AnonymousResourceCollection
+    public function index(Request $request): AnonymousResourceCollection
     {
         $this->authorize('viewAny', Photo::class);
 
-        return PhotoResource::collection($this->photoService->paginate());
+        return PhotoResource::collection($this->photoService->paginate($request->user()));
     }
 
     public function show(Photo $photo): PhotoResource
