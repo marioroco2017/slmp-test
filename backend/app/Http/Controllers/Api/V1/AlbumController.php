@@ -10,6 +10,7 @@ use App\Http\Resources\PhotoResource;
 use App\Models\Album;
 use App\Services\AlbumService;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Throwable;
 
@@ -19,12 +20,18 @@ class AlbumController extends Controller
     {
     }
 
-    public function index(): AnonymousResourceCollection
+    public function index(Request $request): AnonymousResourceCollection
     {
+
         $this->authorize('viewAny', Album::class);
 
-        return AlbumResource::collection($this->albumService->paginate());
+        $posts = $this->albumService->paginate($request->user());
+
+        return AlbumResource::collection($posts);
+
+
     }
+
 
     public function show(Album $album): AlbumResource
     {
@@ -44,7 +51,7 @@ class AlbumController extends Controller
         } catch (Throwable $e) {
             return response()->json([
                 'message' => 'Failed to create album.',
-                'error'   => app()->hasDebugModeEnabled() ? $e->getMessage() : null,
+                'error' => app()->hasDebugModeEnabled() ? $e->getMessage() : null,
             ], 500);
         }
     }
@@ -60,7 +67,7 @@ class AlbumController extends Controller
         } catch (Throwable $e) {
             return response()->json([
                 'message' => 'Failed to update album.',
-                'error'   => app()->hasDebugModeEnabled() ? $e->getMessage() : null,
+                'error' => app()->hasDebugModeEnabled() ? $e->getMessage() : null,
             ], 500);
         }
     }
@@ -76,7 +83,7 @@ class AlbumController extends Controller
         } catch (Throwable $e) {
             return response()->json([
                 'message' => 'Failed to delete album.',
-                'error'   => app()->hasDebugModeEnabled() ? $e->getMessage() : null,
+                'error' => app()->hasDebugModeEnabled() ? $e->getMessage() : null,
             ], 500);
         }
     }

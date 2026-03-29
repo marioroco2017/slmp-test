@@ -8,9 +8,10 @@ use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class AlbumService
 {
-    public function paginate(int $perPage = 15): LengthAwarePaginator
+
+    public function paginate(User $user, int $perPage = 15): LengthAwarePaginator
     {
-        return Album::paginate($perPage);
+        return $user->albums()->paginate($perPage);
     }
 
     public function create(User $user, array $data): Album

@@ -8,9 +8,9 @@ use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class TodoService
 {
-    public function paginate(int $perPage = 15): LengthAwarePaginator
+    public function paginate(User $user, int $perPage = 15): LengthAwarePaginator
     {
-        return Todo::paginate($perPage);
+        return $user->todos()->paginate($perPage);
     }
 
     public function create(User $user, array $data): Todo

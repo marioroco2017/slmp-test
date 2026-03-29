@@ -8,9 +8,9 @@ use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class PostService
 {
-    public function paginate(int $perPage = 15): LengthAwarePaginator
+    public function paginate(User $user, int $perPage = 15)
     {
-        return Post::paginate($perPage);
+        return $user->posts()->paginate($perPage);
     }
 
     public function create(User $user, array $data): Post

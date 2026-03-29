@@ -9,6 +9,7 @@ use App\Http\Resources\TodoResource;
 use App\Models\Todo;
 use App\Services\TodoService;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Throwable;
 
@@ -18,11 +19,16 @@ class TodoController extends Controller
     {
     }
 
-    public function index(): AnonymousResourceCollection
+    public function index(Request $request): AnonymousResourceCollection
     {
+
         $this->authorize('viewAny', Todo::class);
 
-        return TodoResource::collection($this->todoService->paginate());
+        $posts = $this->todoService->paginate($request->user());
+
+        return TodoResource::collection($posts);
+
+
     }
 
     public function show(Todo $todo): TodoResource
@@ -43,7 +49,7 @@ class TodoController extends Controller
         } catch (Throwable $e) {
             return response()->json([
                 'message' => 'Failed to create todo.',
-                'error'   => app()->hasDebugModeEnabled() ? $e->getMessage() : null,
+                'error' => app()->hasDebugModeEnabled() ? $e->getMessage() : null,
             ], 500);
         }
     }
@@ -59,7 +65,7 @@ class TodoController extends Controller
         } catch (Throwable $e) {
             return response()->json([
                 'message' => 'Failed to update todo.',
-                'error'   => app()->hasDebugModeEnabled() ? $e->getMessage() : null,
+                'error' => app()->hasDebugModeEnabled() ? $e->getMessage() : null,
             ], 500);
         }
     }
@@ -75,7 +81,7 @@ class TodoController extends Controller
         } catch (Throwable $e) {
             return response()->json([
                 'message' => 'Failed to delete todo.',
-                'error'   => app()->hasDebugModeEnabled() ? $e->getMessage() : null,
+                'error' => app()->hasDebugModeEnabled() ? $e->getMessage() : null,
             ], 500);
         }
     }

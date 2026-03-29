@@ -10,6 +10,7 @@ use App\Http\Resources\PostResource;
 use App\Models\Post;
 use App\Services\PostService;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Throwable;
 
@@ -19,11 +20,13 @@ class PostController extends Controller
     {
     }
 
-    public function index(): AnonymousResourceCollection
+    public function index(Request $request): AnonymousResourceCollection
     {
         $this->authorize('viewAny', Post::class);
 
-        return PostResource::collection($this->postService->paginate());
+        $posts = $this->postService->paginate($request->user());
+
+        return PostResource::collection($posts);
     }
 
     public function show(Post $post): PostResource
