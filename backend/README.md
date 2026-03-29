@@ -30,10 +30,13 @@ cp .env.example .env
 # 3. Build and start containers
 docker-compose up -d --build
 
-# 4. Run migrations
+# 4. Install composer
+docker-compose exec app composer install
+
+# 5. Run migrations
 docker-compose exec app php artisan migrate
 
-# 5. Seed database from JSONPlaceholder
+# 6. Seed database from JSONPlaceholder
 docker-compose exec app php artisan app:fetch-jsonplaceholder
 ```
 
